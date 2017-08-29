@@ -3,6 +3,7 @@ import { Channel } from './channels';
 import { Server } from './server';
 import { HttpApi } from './api';
 import { Log } from './log';
+import { Actions } from './actions';
 
 const packageFile = require('../package.json');
 
@@ -57,6 +58,13 @@ export class EchoServer {
      * @type {Channel}
      */
     private channel: Channel;
+
+    /**
+     * Actions instance.
+     *
+     * @type {Actions}
+     */
+    private actions: Actions;
 
     /**
      * Redis subscriber instance.
@@ -247,6 +255,14 @@ export class EchoServer {
      */
     onUnsubscribe(socket: any): void {
         socket.on('unsubscribe', data => {
+            Object.keys(socket.rooms).forEach(room => {
+                if (room !== socket.id) {
+                    if(room.indexOf('box.') !== -1){
+                        this.actions = new Actions(room.replace('box.',''));
+                        this.actions.disconnected({data:'unsubscribed'});
+                    }
+                }
+            });
             this.channel.leave(socket, data.channel, 'unsubscribed');
         });
     }
@@ -260,6 +276,10 @@ export class EchoServer {
         socket.on('disconnecting', (reason) => {
             Object.keys(socket.rooms).forEach(room => {
                 if (room !== socket.id) {
+                    if(room.indexOf('box.') !== -1){
+                        this.actions = new Actions(room.replace('box.',''));
+                        this.actions.disconnected(reason);
+                    }
                     this.channel.leave(socket, room, reason);
                 }
             });
