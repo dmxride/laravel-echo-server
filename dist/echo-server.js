@@ -113,6 +113,7 @@ var EchoServer = (function () {
         var _this = this;
         socket.on('subscribe', function (data) {
             _this.channel.join(socket, data);
+            console.log(socket, data);
             _this.actions = new actions_1.Actions(socket.id);
             _this.actions.connected({ data: 'subscribed' });
         });
