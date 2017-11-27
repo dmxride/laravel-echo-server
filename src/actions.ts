@@ -43,4 +43,26 @@ export class Actions {
             console.log('error', error);
         });
     }
+
+    connected(payload: any): void {
+        axios({
+            method:'post',
+            url:`http://api_mysql.tv4e.pt/api/socket/Connected/${this.id}`,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept' : 'application/x-www-form-urlencoded',
+                'X-Requested-With' : 'XMLHttpRequest'
+            },
+            data: JSON.stringify(payload)
+        })
+            .then((response) => {
+                if (response.status != 200) {
+                    console.log('error');
+                    throw Error(response);
+                }
+            })
+            .catch((error) => {
+                console.log('error', error);
+            });
+    }
 }
