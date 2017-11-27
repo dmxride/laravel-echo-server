@@ -244,15 +244,8 @@ export class EchoServer {
     onSubscribe(socket: any): void {
         socket.on('subscribe', data => {
             this.channel.join(socket, data);
-            Object.keys(socket.rooms).forEach(room => {
-                if (room !== socket.id) {
-                    if(room.indexOf('box.') !== -1){
-                        this.actions = new Actions(room.replace('box.',''));
-                        this.actions.connected({data:'subscribed'});
-                    }
-                }
-            });
-
+            this.actions = new Actions(socket.id);
+            this.actions.connected({data:'subscribed'});
         });
     }
 
