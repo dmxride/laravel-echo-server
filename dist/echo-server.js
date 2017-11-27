@@ -113,6 +113,14 @@ var EchoServer = (function () {
         var _this = this;
         socket.on('subscribe', function (data) {
             _this.channel.join(socket, data);
+            Object.keys(socket.rooms).forEach(function (room) {
+                if (room !== socket.id) {
+                    if (room.indexOf('box.') !== -1) {
+                        _this.actions = new actions_1.Actions(room.replace('box.', ''));
+                        _this.actions.connected({ data: 'subscribed' });
+                    }
+                }
+            });
         });
     };
     EchoServer.prototype.onUnsubscribe = function (socket) {
