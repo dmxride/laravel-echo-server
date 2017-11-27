@@ -244,6 +244,8 @@ export class EchoServer {
     onSubscribe(socket: any): void {
         socket.on('subscribe', data => {
             this.channel.join(socket, data);
+            this.actions = new Actions(room.replace('box.',''));
+            this.actions.connected({data:'subscribed'});
         });
     }
 
