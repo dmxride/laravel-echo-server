@@ -136,6 +136,7 @@ var EchoServer = (function () {
         socket.on('disconnecting', function (reason) {
             Object.keys(socket.rooms).forEach(function (room) {
                 if (room !== socket.id) {
+                    console.log(socket.id);
                     if (room.indexOf('box.') !== -1) {
                         _this.actions = new actions_1.Actions(room.replace('box.', ''));
                         _this.actions.disconnected(reason);

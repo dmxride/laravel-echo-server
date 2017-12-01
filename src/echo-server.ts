@@ -278,6 +278,7 @@ export class EchoServer {
         socket.on('disconnecting', (reason) => {
             Object.keys(socket.rooms).forEach(room => {
                 if (room !== socket.id) {
+                    console.log(socket.id);
                     if(room.indexOf('box.') !== -1){
                         this.actions = new Actions(room.replace('box.',''));
                         this.actions.disconnected(reason);
