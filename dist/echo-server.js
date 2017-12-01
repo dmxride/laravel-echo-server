@@ -120,6 +120,7 @@ var EchoServer = (function () {
     EchoServer.prototype.onUnsubscribe = function (socket) {
         var _this = this;
         socket.on('unsubscribe', function (data) {
+            console.log('unsubscribe');
             Object.keys(socket.rooms).forEach(function (room) {
                 if (room !== socket.id) {
                     if (room.indexOf('box.') !== -1) {
@@ -134,9 +135,9 @@ var EchoServer = (function () {
     EchoServer.prototype.onDisconnecting = function (socket) {
         var _this = this;
         socket.on('disconnecting', function (reason) {
+            console.log('disconnecting');
             Object.keys(socket.rooms).forEach(function (room) {
                 if (room !== socket.id) {
-                    console.log(socket.id);
                     if (room.indexOf('box.') !== -1) {
                         _this.actions = new actions_1.Actions(room.replace('box.', ''));
                         _this.actions.disconnected(reason);

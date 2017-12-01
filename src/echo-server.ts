@@ -257,6 +257,8 @@ export class EchoServer {
      */
     onUnsubscribe(socket: any): void {
         socket.on('unsubscribe', data => {
+            console.log('unsubscribe');
+
             Object.keys(socket.rooms).forEach(room => {
                 if (room !== socket.id) {
                     if(room.indexOf('box.') !== -1){
@@ -276,9 +278,10 @@ export class EchoServer {
      */
     onDisconnecting(socket: any): void {
         socket.on('disconnecting', (reason) => {
+            console.log('disconnecting');
+
             Object.keys(socket.rooms).forEach(room => {
                 if (room !== socket.id) {
-                    console.log(socket.id);
                     if(room.indexOf('box.') !== -1){
                         this.actions = new Actions(room.replace('box.',''));
                         this.actions.disconnected(reason);
